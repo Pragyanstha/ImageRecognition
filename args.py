@@ -7,4 +7,6 @@ def parse():
     p.add('--dim_subspace', type = int)
     p.add('--method', type = str)
     p.add('--expname', type=str)
+    p.add('--sigma', type=float)
+    p.add('--kernel', type=str)
     return p.parse_args()
