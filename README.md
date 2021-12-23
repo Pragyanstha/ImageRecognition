@@ -1,17 +1,21 @@
 # Face Recognition Using Subspace Methods
 
 > **An example of predicted matches found by the algorithm**  
+<br />  
+
 ![sample imgs](imgs/sample_imgs.png)  
 <br />  
 
-> **The similarity scores of the matches**  
+> **Similarity scores of the matches**  
 ![scores](imgs/sample_scores.png)  
+
+> Accuracy of the implemented methods  
 
 | Method | Top 1 accuracy | Top 5 accuracy |
 | :--- | :---: | :---: |
-| MSM (baseline) | 91.48 | 93.61 |
+| MSM (baseline) | **91.48** | **93.61** |
 | KMSM | 80.85 | 91.48 |
-| Hybrid | 91.489 | 93.61 |  
+| Hybrid | 91.48 | 93.61 |  
 
 
 
