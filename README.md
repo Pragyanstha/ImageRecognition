@@ -2,7 +2,8 @@
 
 > **An example of predicted matches found by the algorithm**  
 ![sample imgs](imgs/sample_imgs.png)  
-<br />
+<br />  
+
 > **The similarity scores of the matches**  
 ![scores](imgs/sample_scores.png)  
 
