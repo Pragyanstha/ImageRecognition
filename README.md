@@ -1,15 +1,15 @@
 # Face Recognition Using Subspace Methods
 
-> **An example of predicted matches found by the algorithm**  
 <br />  
 
+> **An example of predicted matches found by the algorithm**  
 ![sample imgs](imgs/sample_imgs.png)  
 <br />  
 
 > **Similarity scores of the matches**  
 ![scores](imgs/sample_scores.png)  
 
-> Accuracy of the implemented methods  
+**Accuracy of the implemented methods  **
 
 | Method | Top 1 accuracy | Top 5 accuracy |
 | :--- | :---: | :---: |
