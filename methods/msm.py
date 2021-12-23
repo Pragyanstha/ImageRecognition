@@ -35,7 +35,7 @@ class MSM(Classifier):
                 accuracy += 1
             logging.debug(f'Test Case - {i}/{len(samples)} \nTop 1 : {accuracy/float(i+1) * 100} % \nTop 5 : {top5_accuracy/float(i+1) * 100}')
         
-        return accuracy/float(len(samples)) * 100.0
+        return accuracy/float(len(samples)) * 100.0, top5_accuracy/float(len(samples)) * 100
 
 
 if __name__ == '__main__':

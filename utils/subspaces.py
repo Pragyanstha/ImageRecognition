@@ -98,16 +98,38 @@ def calcKernelCosineScores2(train_bases, test_basis,X, Y, num_cosines = 1):
 
     return scores, labels    
 
-def calcMODScore(test_sample, train_sample, dim_subspace = 9,  num_cosines = 1):   
-    test_sample = getSubspace(test_sample, dim_subspace)
-    train_sample = getSubspace(test_sample, dim_subspace)
-
+def calcMODScore(test_sample, train_samples, dim_diffspace = 9,  num_cosines = 1):   
     # C = test_sample.T @ train_sample @ train_sample.T @ test_sample
     # w, v = LA.eigh(C)
     # idx = cp.argsort(w)
     # ws = w[idx[-1:-1-num_cosines:-1]]
     # score = 1/cp.sum(ws)
 
-    score = test_sample[:,0].T @ train_sample[:,0]
+    # Generate the G matrix
+    G = cp.zeros((train_samples[0].shape[0], train_samples[0].shape[0]))
 
-    return score
+    for S in train_samples:
+        G += S@S.T
+    
+    w, v = LA.eigh(G)
+    idx = cp.argsort(w)
+    vs = v[:, idx[0:dim_diffspace]]
+
+    # The Difference Subpace Projection Matrix
+    D = vs @ vs.T
+
+    # Calculate projected subspace bases
+    test_sample_projected = D @ test_sample
+    test_sample_projected = test_sample_projected * cp.linalg.norm(test_sample_projected, axis = 0, keepdims=True)
+    test_sample_projected, dump = cp.linalg.qr(test_sample_projected)
+    scores = cp.zeros(len(train_samples))
+    for i, train_sample in enumerate(train_samples):
+        train_sample_projected, R = cp.linalg.qr(D @ S)
+        C = test_sample.T @ train_sample @ train_sample.T @ test_sample
+        w, v = LA.eigh(C)
+        idx = cp.argsort(w)
+        ws = w[idx[-1:-1-num_cosines:-1]]
+        scores[i] = cp.sum(ws)
+
+
+    return scores
