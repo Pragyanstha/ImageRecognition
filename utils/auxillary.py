@@ -42,20 +42,21 @@ def prepare_data_all(path, mode = 'test'):
         xt = [X_train[i*3], X_train[i*3+1], X_train[i*3+2]]
         ind_sorted_sample = [0, 1, 2]
         if mode == 'test':
-            training_samples.append((y_train[i], (np.concatenate(xt, axis = -1) - mean)/std))
+            training_samples.append((y_train[3*i], (np.concatenate(xt, axis = -1) - mean)/std))
         else:
             ind_sorted_sample = np.argsort(np.array([xt[0].shape[1], xt[1].shape[1], xt[2].shape[1]]))
-            training_samples.append((y_train[i], (np.concatenate([xt[ind] for ind in ind_sorted_sample[1:]], axis = -1) - mean)/std))
+            training_samples.append((y_train[3*i], (np.concatenate([xt[ind] for ind in ind_sorted_sample[1:]], axis = -1) - mean)/std))
 
         #training_samples.append((y_train[i], (np.concatenate([X_train[i*3 ], X_train[i*3+1], X_train[i*3+2]], axis = -1))))
         
         # Hold one out for validation
-        validation_samples.append((y_train[i], ((xt[ind_sorted_sample[0]] - mean)/std)))
+        validation_samples.append((y_train[3*i], ((xt[ind_sorted_sample[0]] - mean)/std)))
     
-    for i in range(len(X_test)//3):
+    for i in range(len(X_test)//6):
         # mean = np.mean(X_test[i])
         # std = np.std(X_test[i])
-        test_samples.append((y_test[i], (np.concatenate([X_test[i*3 ], X_test[i*3+1], X_test[i*3+2]], axis = -1) - mean)/std))
+        test_samples.append((y_test[6*i], (np.concatenate([X_test[i*6 ], X_test[i*6+1], X_test[i*6+2], 
+            X_test[i*6+3],X_test[i*6+4],X_test[i*6+5],], axis = -1) - mean)/std))
         #test_samples.append((y_test[i], (np.concatenate([X_test[i*3 ], X_test[i*3+1], X_test[i*3+2]], axis = -1))))
 
     if mode == 'test':

@@ -69,6 +69,20 @@ def calcCosineScores2(test_sample, train_samples, num_cosines = 1):
 
     return scores, labels    
 
+def calcCosineScores3(test_sample, train_samples, num_imgs_test, num_imgs_train, num_cosines = 1):
+    scores = cp.zeros(len(train_samples))
+    labels = []
+    for i, (label, train_sample) in enumerate(train_samples):
+        C = test_sample.T @ train_sample @ train_sample.T @ test_sample
+        w, v = LA.eigh(C)
+        idx = cp.argsort(w)
+        ws = w[idx[-1:-1-num_cosines:-1]]
+        scores[i] = cp.sum(ws)
+        
+        labels.append(label)
+
+    return scores, labels    
+
 def calcAngleScores2(test_sample, train_samples, num_cosines = 1):
     scores = cp.zeros(len(train_samples))
     labels = []

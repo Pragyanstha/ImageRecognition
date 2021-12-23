@@ -10,11 +10,13 @@ import optuna
 
 def run(opt):
 
-    training_samples, test_validation_samples = prepare_data_all('ytc_py.pkl', opt.mode)
+    training_samples, test_validation_samples = prepare_data_all('ytc_py.pkl', 'test') # WARNING: Set to test mode for validation too !!
 
     if opt.mode == 'test':
         if opt.method == 'msm':
             classifier = methods.MSM(opt.dim_subspace, opt.num_cosines)
+        elif opt.method == 'msm_mod':
+            classifier = methods.MSM_MOD(opt.dim_subspace, opt.dim_diffspace, opt.num_cosines)
         elif opt.method == 'kmsm':
             classifier = methods.KMSM(opt.dim_subspace, opt.num_cosines, opt.sigma, opt.kernel)
         elif opt.method == 'kmsm_mod':
@@ -28,8 +30,8 @@ def run(opt):
 
     elif opt.mode == 'validation':
         def objective(trial):
-            dim_subspace = trial.suggest_int('dim_subspace', 3, 20)
-            num_cosines =  trial.suggest_int('num_cosines', 3, dim_subspace)
+            dim_subspace = trial.suggest_int('dim_subspace', 3, 50)
+            num_cosines =  trial.suggest_int('num_cosines', 3, dim_subspace-2)
             if opt.method == 'msm':
                 classifier = methods.MSM(dim_subspace, num_cosines)
             elif opt.method == 'kmsm':
