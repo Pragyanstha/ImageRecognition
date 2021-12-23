@@ -28,13 +28,14 @@ def run(opt):
 
     elif opt.mode == 'validation':
         def objective(trial):
-            dim_subspace = trial.suggest_int('dim_subspace', 3, 30)
+            dim_subspace = trial.suggest_int('dim_subspace', 3, 20)
             num_cosines =  trial.suggest_int('num_cosines', 3, dim_subspace)
             if opt.method == 'msm':
                 classifier = methods.MSM(dim_subspace, num_cosines)
             elif opt.method == 'kmsm':
                 sigma = trial.suggest_float('sigma', 1e-03, 1.0, log=True)
                 kernel = trial.suggest_categorical('kernel', ['rbf', 'poly'])
+                print(f'{dim_subspace} {num_cosines} {sigma} {kernel}')
                 classifier = methods.KMSM(dim_subspace, num_cosines, sigma, kernel)
             elif opt.method == 'kmsm_mod':
                 sigma = trial.suggest_float('sigma', 1e-03, 1.0, log=True)
@@ -49,7 +50,7 @@ def run(opt):
         optuna.logging.get_logger("optuna").addHandler(logging.StreamHandler(sys.stdout))
         storage_name = "sqlite:///db/{}.db".format(opt.expname)
         study = optuna.create_study(study_name=opt.expname, storage=storage_name, load_if_exists=True)
-        study.optimize(objective, n_trials=50)  # Invoke optimization of the objective function.
+        study.optimize(objective, n_trials=500)  # Invoke optimization of the objective function.
         #logging.debug(f'----- Result ------\nTop 1 {top1_accuracy} %\nTop 5 {top5_accuracy} %')
         print("Best value: {} (params: {})\n".format(study.best_value, study.best_params))
         return 0

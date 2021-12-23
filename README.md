@@ -1,5 +1,9 @@
 # Face Recognition Using Subspace Methods
-Image goes here
+
+![sample imgs](imgs/sample_imgs.png)
+![scores](imgs/sample_scores.png)
+
+
 
 ## Overview
 Subspace based methods are implemented and evaulated using the [YTC](http://seqamlab.com/youtube-celebrities-face-tracking-and-recognition-dataset/) dataset.  

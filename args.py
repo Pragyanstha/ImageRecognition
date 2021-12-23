@@ -1,6 +1,6 @@
 import configargparse
 
-def parse():
+def parse(commands = None):
     p = configargparse.ArgParser()
     p.add('-c', '--config', is_config_file = True)
     p.add('--mode', default='test', type=str)
@@ -11,4 +11,10 @@ def parse():
     p.add('--expname', type=str)
     p.add('--sigma', type=float)
     p.add('--kernel', type=str)
-    return p.parse_args()
+
+    if commands:
+        opt = p.parse_args(commands)
+    else:
+        opt = p.parse_args()
+
+    return opt

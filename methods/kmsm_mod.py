@@ -62,3 +62,28 @@ class KMSM_MOD(Classifier):
             logging.debug(f'Test Case - {i}/{len(samples)} \nTop 1 : {accuracy/float(i+1) * 100} % \nTop 5 : {top5_accuracy/float(i+1) * 100}')
         
         return accuracy/float(len(samples)) * 100.0, top5_accuracy/float(len(samples)) * 100
+    
+    # For illustration purpose
+    def evalulate_single(self, X):
+        if not hasattr(self, 'train_bases'):
+            raise ValueError('Create training subspaces first by calling train()')
+        
+
+        K = self.getK(cp.asarray(X), cp.asarray(X), self.sigma)
+        test_basis = getKernelBasis(K, self.dim_subspace)
+        test_sample = cp.asarray(X)
+        self.scores, self.labels = calcKernelCosineScores2(self.train_bases, test_basis, self.train_samples,test_sample, self.num_cosines)
+        
+        
+        # Creating top 5 candidates score
+        top5 = cp.asnumpy(cp.argsort(self.scores)[-1:-6:-1])
+        candidates = np.array(self.labels, dtype=object)[top5]
+
+        cand_Subspace = [getSubspace(self.train_samples[idx], self.dim_subspace) for idx in top5]
+        cand_Labels = [self.labels[idx] for idx in top5]
+        cand_Imgs = [self.train_samples[idx] for idx in top5]
+
+        mod_scores = calcMODScore(getSubspace(cp.asarray(X), self.dim_subspace), cand_Subspace, dim_diffspace=self.dim_diffspace, num_cosines=self.num_cosines)
+        
+    
+        return cand_Labels, self.scores[top5], mod_scores, cand_Imgs
