@@ -1,1 +1,1 @@
-python run.py --expname val_problem1 --method msm --mode validation
+python run.py --expname val_problem2 --method msm --mode validation

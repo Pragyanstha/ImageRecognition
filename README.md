@@ -7,7 +7,7 @@
 <br />  
 
 > **Similarity scores of the matches**  
-![scores](imgs/sample_scores.png)  
+![scores](imgs/sample_scores_1.png)  
 
 **Accuracy of the implemented methods**  
 
